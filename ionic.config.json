@@ -1,0 +1,7 @@
+{
+  "name": "sytapro",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
