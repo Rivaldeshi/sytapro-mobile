@@ -1,0 +1,47 @@
+<ion-content>
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Welcome Back</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">Sign in to your account</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <ion-item class="form-field-animation">
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="email"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+            <ion-text color="danger" *ngIf="loginForm.get('email')?.errors?.['required']">
+              Username is required
+            </ion-text>
+          </div>
+
+          <ion-item class="form-field-animation">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            <ion-text color="danger" *ngIf="loginForm.get('password')?.errors?.['required']">
+              Password is required
+            </ion-text>
+            <ion-text color="danger" *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Password must be at least 6 characters
+            </ion-text>
+          </div>
+
+          <ion-button expand="block" type="submit" [disabled]="loginForm.invalid || isLoading" class="ion-margin-top">
+            <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+            <span *ngIf="!isLoading">Sign In</span>
+          </ion-button>
+        </form>
+
+        <div class="ion-text-center ion-margin-top">
+          <ion-text>Don't have an account? </ion-text>
+          <a routerLink="/auth/register">Sign up</a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

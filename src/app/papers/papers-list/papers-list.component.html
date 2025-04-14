@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Exam Papers</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearFilters()" [disabled]="!filterForm.dirty">
+        <ion-icon name="refresh" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Filters -->
+  <form [formGroup]="filterForm" class="ion-padding">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="4">
+          <ion-item>
+            <ion-label position="floating">Subject</ion-label>
+            <ion-select formControlName="subjectId" interface="popover">
+              <ion-select-option [value]="0">All Subjects</ion-select-option>
+              <ion-select-option *ngFor="let subject of subjects" [value]="subject.subjectId">
+                {{subject.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="12" size-md="4">
+          <ion-item>
+            <ion-label position="floating">Exam</ion-label>
+            <ion-select formControlName="examId" interface="popover">
+              <ion-select-option [value]="0">All Exams</ion-select-option>
+              <ion-select-option *ngFor="let exam of exams" [value]="exam.examId">
+                {{exam.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="12" size-md="4">
+          <ion-item>
+            <ion-label position="floating">Session</ion-label>
+            <ion-select formControlName="sessionId" interface="popover">
+              <ion-select-option [value]="0">All Sessions</ion-select-option>
+              <ion-select-option *ngFor="let session of sessions" [value]="session.sessionId">
+                {{session.year}} - {{session.code}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <!-- Papers List -->
+  <div class="papers-grid ion-padding">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let paper of papers; trackBy: trackByPaperId">
+          <ion-card [routerLink]="['/papers', paper.paperId]">
+            <ion-card-header>
+              <ion-card-subtitle>
+                {{paper.subject?.name}} | {{paper.exam?.name}} | {{paper.session?.year}}
+              </ion-card-subtitle>
+              <ion-card-title>{{paper.description || 'Exam Paper'}}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-list lines="none">
+                <ion-item *ngIf="paper.fileMetadata">
+                  <ion-icon name="document-outline" slot="start"></ion-icon>
+                  <ion-label>Question Paper</ion-label>
+                </ion-item>
+                <ion-item *ngIf="paper.solution">
+                  <ion-icon name="document-text-outline" slot="start"></ion-icon>
+                  <ion-label>PDF Solution</ion-label>
+                  <ion-note slot="end">{{paper.pdfSolutionPrice | currency}}</ion-note>
+                </ion-item>
+                <ion-item *ngIf="paper.videoSolution">
+                  <ion-icon name="videocam-outline" slot="start"></ion-icon>
+                  <ion-label>Video Solution</ion-label>
+                  <ion-note slot="end">{{paper.videoSolutionPrice | currency}}</ion-note>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Loading State -->
+  <ion-spinner *ngIf="isLoading" class="ion-margin-auto"></ion-spinner>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && papers.length === 0" class="empty-state ion-padding ion-text-center">
+    <ion-icon name="documents-outline" class="empty-icon"></ion-icon>
+    <h2>No Papers Found</h2>
+    <p>Try adjusting your filters or check back later for new papers.</p>
+  </div>
+</ion-content>

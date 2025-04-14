@@ -9,6 +9,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "gen-api": "npx openapi-generator-cli generate -i https://backend.sytapro.com/swagger/v1/swagger.json -g typescript-angular -o src/app/generated  --additional-properties=ngVersion=16.2.12,basePath=",
     "lint": "ng lint"
   },
   "private": true,
@@ -27,7 +28,11 @@
     "@capacitor/keyboard": "7.0.1",
     "@capacitor/status-bar": "7.0.1",
     "@ionic/angular": "^8.0.0",
+    "@vime/angular": "^5.4.1",
+    "@vime/core": "^5.4.1",
     "ionicons": "^7.0.0",
+    "ng2-pdf-viewer": "^10.4.0",
+    "ngx-extended-pdf-viewer": "^23.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

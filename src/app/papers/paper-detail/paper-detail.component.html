@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/papers"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{paper?.subject?.name}} Paper</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!isLoading && paper" class="paper-detail">
+    <!-- Paper Info -->
+    <ion-card class="paper-info">
+      <ion-card-header>
+        <ion-card-subtitle>
+          {{paper.exam?.name}} | {{paper.session?.year}} - {{paper.session?.code}}
+        </ion-card-subtitle>
+        <ion-card-title>{{paper.description || 'Exam Paper'}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Content Tabs -->
+    <ion-segment [(ngModel)]="activeTab" (ionChange)="onTabChange($event)">
+      <ion-segment-button value="question" [disabled]="!paper.fileMetadata">
+        <ion-label>Question Paper</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="solution" [disabled]="!paper.solution">
+        <ion-label>PDF Solution</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="video" [disabled]="!paper.videoSolution">
+        <ion-label>Video Solution</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Content Display -->
+    <div class="content-container" [ngSwitch]="activeTab">
+      <!-- Question Paper -->
+      <div *ngSwitchCase="'question'" class="pdf-container" [class.active]="activeTab === 'question'">
+        <pdf-viewer *ngIf="pdfUrl"
+          [src]="pdfUrl"
+          [render-text]="true"
+          [original-size]="false"
+          [show-all]="true"
+          [fit-to-page]="true"
+          [zoom]="1"
+          [zoom-scale]="'page-width'"
+          [stick-to-page]="true"
+          [external-link-target]="'blank'"
+          [autoresize]="true"
+          [show-borders]="false"
+          style="width: 100%; height: calc(100vh - 16rem);"
+          (after-load-complete)="onPdfLoadComplete($event)"
+          (error)="onPdfLoadError($event)">
+        </pdf-viewer>
+      </div>
+
+      <!-- PDF Solution -->
+      <div *ngSwitchCase="'solution'" class="pdf-container" [class.active]="activeTab === 'solution'">
+        <div *ngIf="paper.solution" class="solution-content">
+          <div *ngIf="pdfUrl" class="pdf-viewer">
+            <pdf-viewer
+              [src]="pdfUrl"
+              [render-text]="true"
+              [original-size]="false"
+              [show-all]="true"
+              [fit-to-page]="true"
+              [zoom]="1"
+              [zoom-scale]="'page-width'"
+              [stick-to-page]="true"
+              [external-link-target]="'blank'"
+              [autoresize]="true"
+              [show-borders]="false"
+              style="width: 100%; height: calc(100vh - 16rem);"
+              (after-load-complete)="onPdfLoadComplete($event)"
+              (error)="onPdfLoadError($event)">
+            </pdf-viewer>
+          </div>
+          <div *ngIf="!pdfUrl" class="purchase-overlay">
+            <ion-icon name="lock-closed"></ion-icon>
+            <h2>PDF Solution Available</h2>
+            <p>Purchase this solution for {{paper.pdfSolutionPrice | currency}}</p>
+            <ion-button expand="block">Purchase Solution</ion-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Solution -->
+      <div *ngSwitchCase="'video'" class="video-container" [class.active]="activeTab === 'video'">
+        <div *ngIf="paper.videoSolution" class="solution-content">
+          <div *ngIf="videoUrl" class="video-player">
+            <video controls [src]="videoUrl" class="video-element">
+              <source [src]="videoUrl" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div *ngIf="!videoUrl" class="purchase-overlay">
+            <ion-icon name="videocam"></ion-icon>
+            <h2>Video Solution Available</h2>
+            <p>Purchase this solution for {{paper.videoSolutionPrice | currency}}</p>
+            <ion-button expand="block">Purchase Solution</ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Loading paper details...</p>
+  </div>
+</ion-content>

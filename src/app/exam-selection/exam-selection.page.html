@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Select Exam</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Available Exams</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngIf="isLoading">
+      <ion-label>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngFor="let exam of exams" (click)="selectExam(exam)" button [class.selected]="selectedExam?.examId === exam.examId">
+      <ion-label>
+        <h2>{{ exam.code }}</h2>
+        <p>{{ exam.name || 'No description available' }}</p>
+      </ion-label>
+      <ion-icon slot="end" name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item *ngIf="!isLoading && exams.length === 0">
+      <ion-label>No exams available</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="selectedExam">
+    <ion-fab-button (click)="viewPapers()">
+      <ion-icon name="document"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

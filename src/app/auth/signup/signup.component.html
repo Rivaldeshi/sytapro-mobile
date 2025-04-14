@@ -1,0 +1,73 @@
+<ion-content class="ion-padding">
+  <div class="signup-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Create Account</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">Join us today</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input type="text" formControlName="username"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid">
+            <ion-text color="danger" *ngIf="signupForm.get('username')?.errors?.['required']">
+              Username is required
+            </ion-text>
+            <ion-text color="danger" *ngIf="signupForm.get('username')?.errors?.['minlength']">
+              Username must be at least 3 characters
+            </ion-text>
+          </div>
+
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">
+            <ion-text color="danger" *ngIf="signupForm.get('email')?.errors?.['required']">
+              Email is required
+            </ion-text>
+            <ion-text color="danger" *ngIf="signupForm.get('email')?.errors?.['email']">
+              Please enter a valid email
+            </ion-text>
+          </div>
+
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid">
+            <ion-text color="danger" *ngIf="signupForm.get('password')?.errors?.['required']">
+              Password is required
+            </ion-text>
+            <ion-text color="danger" *ngIf="signupForm.get('password')?.errors?.['minlength']">
+              Password must be at least 6 characters
+            </ion-text>
+          </div>
+
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Confirm Password</ion-label>
+            <ion-input type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item>
+          <div class="validation-error" *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.errors?.['mismatch']">
+            <ion-text color="danger">
+              Passwords do not match
+            </ion-text>
+          </div>
+
+          <ion-button expand="block" type="submit" [disabled]="signupForm.invalid || isLoading" class="ion-margin-top">
+            <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+            <span *ngIf="!isLoading">Sign Up</span>
+          </ion-button>
+        </form>
+
+        <div class="ion-text-center ion-margin-top">
+          <ion-text>Already have an account? </ion-text>
+          <a routerLink="/auth/login">Sign in</a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
