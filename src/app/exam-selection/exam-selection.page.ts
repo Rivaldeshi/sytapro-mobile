@@ -36,6 +36,7 @@ export class ExamSelectionPage implements OnInit {
 
   selectExam(exam: Exam) {
     this.selectedExam = exam;
+    this.viewPapers()
   }
 
   viewPapers() {

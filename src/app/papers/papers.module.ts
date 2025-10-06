@@ -4,8 +4,8 @@ import { PapersListComponent } from './papers-list/papers-list.component';
 import { PaperDetailComponent } from './paper-detail/paper-detail.component';
 
 const routes: Routes = [
-  { path: '', component: PapersListComponent },
-  { path: ':id', component: PaperDetailComponent }
+  { path: ':examId', component: PapersListComponent },
+  { path: 'details/:id', component: PaperDetailComponent }
 ];
 
 @NgModule({

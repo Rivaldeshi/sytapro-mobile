@@ -18,7 +18,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'papers/:examId',
+    path: 'papers',
     loadChildren: () => import('./papers/papers.module').then(m => m.PapersModule),
     canActivate: [authGuard]
   },

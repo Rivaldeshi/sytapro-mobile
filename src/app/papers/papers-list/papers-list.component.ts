@@ -61,7 +61,7 @@ export class PapersListComponent implements OnInit {
         this.papersService.getExams(),
         this.papersService.getSessions()
       ]);
-      
+
       this.subjects = subjects;
       this.exams = exams;
       this.sessions = sessions;
